@@ -6,7 +6,6 @@ import { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import outputs from "../amplify_outputs.json";
 
-
 import "@aws-amplify/ui-react/styles.css";
 
 Amplify.configure(outputs);
@@ -25,20 +24,27 @@ function App() {
 
     try {
       const formData = new FormData(event.currentTarget);
-      
+      const ingredients = formData.get("ingredients")?.toString().trim();
+
+      if (!ingredients) {
+        alert("Please provide at least one ingredient.");
+        setLoading(false);
+        return;
+      }
+
       const { data, errors } = await amplifyClient.queries.askBedrock({
-        ingredients: [formData.get("ingredients")?.toString() || ""],
+        ingredients: [ingredients],
       });
 
       if (!errors) {
         setResult(data?.body || "No data returned");
       } else {
-        console.log(errors);
+        console.error("GraphQL errors:", errors);
+        setResult("An error occurred while fetching the recipe.");
       }
-
-  
     } catch (e) {
       alert(`An error occurred: ${e}`);
+      console.error("Error during recipe generation:", e);
     } finally {
       setLoading(false);
     }

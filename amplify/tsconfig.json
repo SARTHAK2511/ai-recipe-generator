@@ -12,6 +12,7 @@
       "$amplify/*": [
         "../.amplify/generated/*"
       ]
-    }
+    },
+    "jsx": "react-jsx"  // Add this line for JSX support in React
   }
 }

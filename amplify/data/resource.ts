@@ -3,14 +3,14 @@ import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 const schema = a.schema({
   BedrockResponse: a.customType({
     body: a.string(),
-    error: a.string(),
+    error: a.string(), // Make error optional
   }),
 
   askBedrock: a
     .query()
     .arguments({ ingredients: a.string().array() })
     .returns(a.ref("BedrockResponse"))
-    .authorization((allow) => [allow.authenticated()])
+    .authorization((allow) => [allow.authenticated()]) // Consider your specific authorization needs
     .handler(
       a.handler.custom({ entry: "./bedrock.js", dataSource: "bedrockDS" })
     ),

@@ -35,6 +35,7 @@ export function response(ctx) {
   // Parse the response body
   const parsedBody = JSON.parse(ctx.result.body);
   // Extract the text content from the response
+  console.log("Response is" , parsedBody.content)
   const res = {
     body: parsedBody.content[0].text,
   };
